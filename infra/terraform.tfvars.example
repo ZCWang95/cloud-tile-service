@@ -1,0 +1,10 @@
+region      = "us-west-2"
+bucket_name = "snowviz-platform-tiles"
+
+# alert_email       = "you@example.com"
+# schedule_expression = "cron(0 12 * * ? *)"
+# schedule_timezone   = "America/Los_Angeles"
+# extra_environment = {
+#   MIN_COVER   = "75"
+#   ZOOM_LEVELS = "8-15"
+# }

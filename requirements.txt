@@ -1,6 +1,4 @@
-google-cloud-storage
-pandas
-Flask
-geopandas
-google-cloud-secret-manager
-# gdal2tiles
+boto3>=1.34
+requests>=2.31
+numpy>=1.26
+rasterio>=1.3

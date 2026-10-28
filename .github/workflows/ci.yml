@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements-dev.txt ./planetcoveragefinder-main
+      - run: pytest -q
+      - run: pcf --help > /dev/null
+
+  terraform:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: infra
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+      - run: terraform fmt -check -recursive
+      - run: terraform init -backend=false -input=false
+      - run: terraform validate
+
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker build -t tile-service .
+      - name: Smoke-test the image's tools
+        run: |
+          docker run --rm --entrypoint sh tile-service -c '
+            python -c "import tile_service.pipeline, rasterio, boto3" &&
+            pcf --help > /dev/null &&
+            $GDAL2TILES_CMD --help > /dev/null &&
+            gdal_translate --version && gdalbuildvrt --version'
