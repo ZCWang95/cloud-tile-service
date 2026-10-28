@@ -1,0 +1,13 @@
+.git
+.github
+.DS_Store
+**/__pycache__
+**/*.pyc
+**/build
+**/*.egg-info
+**/.ipynb_checkpoints
+infra
+scripts
+tests
+*.md
+!planetcoveragefinder-main/README.md
